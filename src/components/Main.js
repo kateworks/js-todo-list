@@ -4,8 +4,10 @@ import {initialTodos} from '../utils/todos-init';
 
 function Main() {
   const [todos, setTodos] = useState([]);
+  const [selectedTodo, setSelectedTodo] = useState(null);
 
   const handleCopyTodo = (todo) => {
+    setSelectedTodo(todo);
     console.log('Copy ' + todo);
   };
 
@@ -34,9 +36,9 @@ function Main() {
       <ul className="todos__list">
         {todos.map((todo, ind) => (
           <Todo todo={todo} key={ind}
-            onCopy={ (todo) => {handleCopyTodo(todo);} } 
-            onEdit={ (todo) => {handleEditTodo(todo);} } 
-            onDelete={ (todo) => {handleDeteleTodo(todo);} } 
+            onCopy={handleCopyTodo} 
+            onEdit={handleEditTodo} 
+            onDelete={handleDeteleTodo} 
           />
         ))}
       </ul>

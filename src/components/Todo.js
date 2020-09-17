@@ -1,16 +1,16 @@
 import React from 'react';
 
-function Todo(props) {
+function Todo({todo, onEdit, onCopy, onDelete}) {
 
-  const handleCopyClick = () => { props.onCopy(); };
+  const handleCopyClick = () => { onCopy(todo); };
 
-  const handleEditClick = () => { props.onEdit(); };
+  const handleEditClick = () => { onEdit(todo); };
 
-  const handleDeleteClick = () => { props.onDelete(); };
+  const handleDeleteClick = () => { onDelete(todo); };
 
   return (
     <li className="todo">
-      <p className="todo__text">{props.todo}</p>
+      <p className="todo__text">{todo}</p>
       <button 
         className="todo__btn todo__btn_type_edit button"
         onClick={handleEditClick}
