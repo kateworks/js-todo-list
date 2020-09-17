@@ -21,18 +21,18 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app", "shared-config"],
-    "rules": {
-      "additional-rule": "warn"
-    },
+    "extends": ["react-app"],
     "overrides": [
       {
-        "files": ["**/*.ts?(x)"],
+        "files": ["**/*.js?(x)"],
         "rules": {
-          "additional-typescript-only-rule": "warn"
+          "comma-dangle": ["error", "always-multiline"],
+          "comma-spacing": ["error", { "before": false, "after": true }],
+          "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
+          "semi": ["error", "always"]
         }
       }
-    ]  
+    ]
   },
   "browserslist": {
     "production": [
