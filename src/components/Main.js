@@ -3,10 +3,13 @@ import Todo from './Todo';
 import {initialTodos} from '../utils/todos-init';
 
 function Main() {
+  const ADD_SUBMIT_NAME = 'Add';
+  const SAVE_SUBMIT_NAME = 'Save';
+
   const [todos, setTodos] = useState([]);
   const [editedTodo, setEditedTodo] = useState('');
-  const [oldTodoValue, setOldTodoValue] = useState('');
-  const [submitName, setSubmitName] = useState('Add');
+  const [editedInd, setEditedInd] = useState(-1);
+  const [submitName, setSubmitName] = useState(ADD_SUBMIT_NAME);
 
   const handleDeteleTodo = (ind) => {
     setTodos(todos.filter((item, i) => (i !== ind)));
@@ -20,21 +23,24 @@ function Main() {
 
   const handleEditTodo = (todo, ind) => {
     setEditedTodo(todo);
-    setOldTodoValue(todo);
-    setSubmitName('Save');
+    setEditedInd(ind);
+    setSubmitName(SAVE_SUBMIT_NAME);
   };
 
-  const handleSubmitClick = () => {
-    // Delete old item
-    // Save new item ???
-    console.log(editedTodo + ' ' + oldTodoValue);
+  const handleSubmitClick = (evt) => {
+    evt.preventDefault();
+    if (submitName === ADD_SUBMIT_NAME) {
+      const tmpArray = todos.slice();
+      tmpArray.push(editedTodo);
+      setTodos(tmpArray);
+    } else {
+      setTodos(todos.map((item, i) => ((i === editedInd) ? editedTodo: item )));
+      setSubmitName(ADD_SUBMIT_NAME);
+    }
     setEditedTodo('');
-    setOldTodoValue('');
-    setSubmitName('Add');
   };
 
   const handleChange = (evt) => {
-    // if empty -- block submit button
     setEditedTodo(evt.target.value);
   };
 

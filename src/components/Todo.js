@@ -10,7 +10,7 @@ function Todo({todo, ind, onEdit, onCopy, onDelete, disabled}) {
 
   return (
     <li className="todo">
-      <p className="todo__text">{ind}{todo}</p>
+      <p className="todo__text">{todo}</p>
       <button 
         className="button todo__btn todo__btn_type_edit"
         title="Edit item"
