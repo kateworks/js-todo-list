@@ -4,19 +4,38 @@ import {initialTodos} from '../utils/todos-init';
 
 function Main() {
   const [todos, setTodos] = useState([]);
-  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [editedTodo, setEditedTodo] = useState('');
+  const [oldTodoValue, setOldTodoValue] = useState('');
+  const [submitName, setSubmitName] = useState('Add');
 
-  const handleCopyTodo = (todo) => {
-    setSelectedTodo(todo);
-    console.log('Copy ' + todo);
+  const handleDeteleTodo = (ind) => {
+    setTodos(todos.filter((item, i) => (i !== ind)));
   };
 
-  const handleEditTodo = (todo) => {
-    console.log('Edit ' + todo);
+  const handleCopyTodo = (todo, ind) => {
+    const tmpArray = todos.slice();
+    tmpArray.splice(ind, 0, todo);
+    setTodos(tmpArray);
   };
 
-  const handleDeteleTodo = (todo) => {
-    console.log('Delete ' + todo);
+  const handleEditTodo = (todo, ind) => {
+    setEditedTodo(todo);
+    setOldTodoValue(todo);
+    setSubmitName('Save');
+  };
+
+  const handleSubmitClick = () => {
+    // Delete old item
+    // Save new item ???
+    console.log(editedTodo + ' ' + oldTodoValue);
+    setEditedTodo('');
+    setOldTodoValue('');
+    setSubmitName('Add');
+  };
+
+  const handleChange = (evt) => {
+    // if empty -- block submit button
+    setEditedTodo(evt.target.value);
   };
 
   useEffect(() => {
@@ -27,18 +46,30 @@ function Main() {
   return(
     <section className="todos">
       <form name="todo-form" className="todos__form">
-        <input type="text" name="todo" className="todos__input" 
-          placeholder="Next task..." />
-        <button className="button todos__btn-submit">
-          Add
+
+        <input type="text" name="todo" 
+          className="todos__input" 
+          placeholder="Next task..." 
+          value={editedTodo}
+          onChange={handleChange}
+        />
+
+        <button type="submit"
+          className="button todos__btn-submit"
+          disabled={!editedTodo}
+          onClick={handleSubmitClick}
+        >
+          {submitName}
         </button>
       </form>
+
       <ul className="todos__list">
         {todos.map((todo, ind) => (
-          <Todo todo={todo} key={ind}
+          <Todo todo={todo} ind={ind} key={ind}
             onCopy={handleCopyTodo} 
             onEdit={handleEditTodo} 
-            onDelete={handleDeteleTodo} 
+            onDelete={handleDeteleTodo}
+            disabled={editedTodo} 
           />
         ))}
       </ul>

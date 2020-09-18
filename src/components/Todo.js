@@ -1,29 +1,32 @@
 import React from 'react';
 
-function Todo({todo, onEdit, onCopy, onDelete}) {
+function Todo({todo, ind, onEdit, onCopy, onDelete, disabled}) {
 
-  const handleCopyClick = () => { onCopy(todo); };
+  const handleCopyClick = () => { onCopy(todo, ind); };
 
-  const handleEditClick = () => { onEdit(todo); };
+  const handleEditClick = () => { onEdit(todo, ind); };
 
-  const handleDeleteClick = () => { onDelete(todo); };
+  const handleDeleteClick = () => { onDelete(ind); };
 
   return (
     <li className="todo">
-      <p className="todo__text">{todo}</p>
+      <p className="todo__text">{ind}{todo}</p>
       <button 
-        className="todo__btn todo__btn_type_edit button"
+        className="button todo__btn todo__btn_type_edit"
         title="Edit item"
+        disabled={disabled}
         onClick={handleEditClick}
       />
       <button 
-        className="todo__btn todo__btn_type_duplicate button"
+        className="button todo__btn todo__btn_type_duplicate"
         title="Copy item"
+        disabled={disabled}
         onClick={handleCopyClick}
       />
       <button 
-        className="todo__btn todo__btn_type_delete button" 
+        className="button todo__btn todo__btn_type_delete" 
         title="Delete item"
+        disabled={disabled}
         onClick={handleDeleteClick}
       />
     </li>
