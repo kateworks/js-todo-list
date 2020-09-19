@@ -2,11 +2,17 @@ import React from 'react';
 
 function Todo({todo, ind, onEdit, onCopy, onDelete, disabled}) {
 
-  const handleCopyClick = () => { onCopy(todo, ind); };
+  const handleCopyClick = () => { 
+    onCopy(todo, ind); 
+  };
 
-  const handleEditClick = () => { onEdit(todo, ind); };
+  const handleEditClick = () => { 
+    onEdit(todo, ind); 
+  };
 
-  const handleDeleteClick = () => { onDelete(ind); };
+  const handleDeleteClick = () => { 
+    onDelete(ind); 
+  };
 
   return (
     <li className="todo">

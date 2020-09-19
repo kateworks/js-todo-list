@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Todo from './Todo';
 import {initialTodos} from '../utils/todos-init';
 
@@ -6,28 +6,29 @@ function Main() {
   const ADD_SUBMIT_NAME = 'Add';
   const SAVE_SUBMIT_NAME = 'Save';
 
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(initialTodos);
   const [editedTodo, setEditedTodo] = useState('');
   const [editedInd, setEditedInd] = useState(-1);
   const [submitName, setSubmitName] = useState(ADD_SUBMIT_NAME);
 
-  const handleDeteleTodo = (ind) => {
-    setTodos(todos.filter((item, i) => (i !== ind)));
+  const handleDeteleTodo = (deletedTodoIndex) => {
+    setTodos(todos.filter((item, index) => 
+      (index !== deletedTodoIndex)));
   };
 
-  const handleCopyTodo = (todo, ind) => {
+  const handleCopyTodo = (copiedTodo, copiedTodoIndex) => {
     const tmpArray = todos.slice();
-    tmpArray.splice(ind, 0, todo);
+    tmpArray.splice(copiedTodoIndex, 0, copiedTodo);
     setTodos(tmpArray);
   };
 
-  const handleEditTodo = (todo, ind) => {
-    setEditedTodo(todo);
-    setEditedInd(ind);
+  const handleEditTodo = (editedTodo, editedTodoIndex) => {
+    setEditedTodo(editedTodo);
+    setEditedInd(editedTodoIndex);
     setSubmitName(SAVE_SUBMIT_NAME);
   };
 
-  const handleSubmitClick = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     if (submitName === ADD_SUBMIT_NAME) {
       const tmpArray = todos.slice();
@@ -44,26 +45,21 @@ function Main() {
     setEditedTodo(evt.target.value);
   };
 
-  useEffect(() => {
-    console.log('Reading initial data...');
-    setTodos(initialTodos);
-  }, []);
-
   return(
     <section className="todos">
-      <form name="todo-form" className="todos__form">
-
+      <form name="todo-form" 
+        className="todos__form"
+        onSubmit={handleSubmit}
+      >
         <input type="text" name="todo" 
           className="todos__input" 
           placeholder="Next task..." 
           value={editedTodo}
           onChange={handleChange}
         />
-
         <button type="submit"
           className="button todos__btn-submit"
           disabled={!editedTodo}
-          onClick={handleSubmitClick}
         >
           {submitName}
         </button>
