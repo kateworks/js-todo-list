@@ -7,42 +7,58 @@ function Main() {
   const SAVE_SUBMIT_NAME = 'Save';
 
   const [todos, setTodos] = useState(initialTodos);
-  const [editedTodo, setEditedTodo] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [editedInd, setEditedInd] = useState(-1);
   const [submitName, setSubmitName] = useState(ADD_SUBMIT_NAME);
 
-  const handleDeteleTodo = (deletedTodoIndex) => {
-    setTodos(todos.filter((item, index) => 
-      (index !== deletedTodoIndex)));
+  const getTodoText = (todoIndex) => {
+    return todos[todoIndex];
   };
 
-  const handleCopyTodo = (copiedTodo, copiedTodoIndex) => {
+  const handleDeteleTodo = (deletedTodoIndex) => {
+    setTodos(todos.filter((item, index) => (
+      index !== deletedTodoIndex
+    )));
+  };
+
+  const handleCopyTodo = (copiedTodoIndex) => {
     const tmpArray = todos.slice();
-    tmpArray.splice(copiedTodoIndex, 0, copiedTodo);
+    const copiedTodoText = getTodoText(copiedTodoIndex);
+    tmpArray.splice(copiedTodoIndex, 0, copiedTodoText);
     setTodos(tmpArray);
   };
 
-  const handleEditTodo = (editedTodo, editedTodoIndex) => {
-    setEditedTodo(editedTodo);
+  const handleEditTodo = (editedTodoIndex) => {
+    setInputValue(getTodoText(editedTodoIndex));
     setEditedInd(editedTodoIndex);
     setSubmitName(SAVE_SUBMIT_NAME);
   };
 
+  const addNewTodo = () => {
+    const tmpArray = todos.slice();
+    tmpArray.push(inputValue);
+    setTodos(tmpArray);
+  };
+
+  const saveEditedTodo = () => {
+    setTodos(todos.map((item, i) => (
+      (i === editedInd) ? inputValue: item 
+    )));
+    setSubmitName(ADD_SUBMIT_NAME);
+  };
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (submitName === ADD_SUBMIT_NAME) {
-      const tmpArray = todos.slice();
-      tmpArray.push(editedTodo);
-      setTodos(tmpArray);
+    if (editedInd === -1) {
+      addNewTodo();
     } else {
-      setTodos(todos.map((item, i) => ((i === editedInd) ? editedTodo: item )));
-      setSubmitName(ADD_SUBMIT_NAME);
+      saveEditedTodo();
     }
-    setEditedTodo('');
+    setInputValue('');
   };
 
   const handleChange = (evt) => {
-    setEditedTodo(evt.target.value);
+    setInputValue(evt.target.value);
   };
 
   return(
@@ -54,24 +70,24 @@ function Main() {
         <input type="text" name="todo" 
           className="todos__input" 
           placeholder="Next task..." 
-          value={editedTodo}
+          value={inputValue}
           onChange={handleChange}
         />
         <button type="submit"
           className="button todos__btn-submit"
-          disabled={!editedTodo}
+          disabled={!inputValue}
         >
           {submitName}
         </button>
       </form>
 
       <ul className="todos__list">
-        {todos.map((todo, ind) => (
-          <Todo todo={todo} ind={ind} key={ind}
+        {todos.map((todo, todoIndex) => (
+          <Todo todo={todo} index={todoIndex} key={todoIndex}
             onCopy={handleCopyTodo} 
             onEdit={handleEditTodo} 
             onDelete={handleDeteleTodo}
-            disabled={editedTodo} 
+            disabled={inputValue} 
           />
         ))}
       </ul>
